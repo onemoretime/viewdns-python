@@ -1,12 +1,14 @@
 import os
 import unittest
+import secrets
 
 class BaseTest(unittest.TestCase):
 
     def setUp(self):
 
         self.base_url = 'https://api.viewdns.info/'
-        self.api_token = '2d1cb7571b6bb06a1d287398db51cd20'
+        # random token
+        self.api_token = secrets.token_hex(16)
 
     def load_from_file(self, json_file):
 

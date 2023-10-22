@@ -1,0 +1,9 @@
+{
+    "query": {
+        "tool": "freeemail_PRO",
+        "domain": "gmail.com"
+    },
+    "response": {
+        "result": "This domain DOES appear to provide free email addresses."
+    }
+}

@@ -8,6 +8,9 @@ except ImportError:
 from .DNSRecord import DNSRecord
 from .HTTPHeader import HTTPHeader
 from .IPLocation import IPLocation
+from .FreeEmail import FreeEmail
+from .IpHistory import IpHistory
+from .MacLookup import MacLookup
 
 class Client():
 
@@ -24,7 +27,35 @@ class Client():
         """
 
         self.api_key = api_key
+
+    def get_ip_history(self, domain):
+        """
+        Shows a historical list of IP addresses a given domain name has been hosted on 
+        as well as where that IP address is geographically located, 
+        and the owner of that IP address.
+
+        Params:
+
+        * domain -  the domain to find historical IP addresses for
+
+        Docs: https://viewdns.info/api/docs/ip-history.php
+        """
+
+        params = dict()
+        params['domain'] = domain
     
+
+        res = self._execute('iphistory', params=params)
+
+        ip_records = []
+
+        for ip_record in res['response']['records']:
+            # class is a reserved word :|            
+            ip_record = IpHistory(**ip_record)
+            ip_records.append(ip_record)
+
+        return ip_records
+
     def get_dns_records(self, domain, record_type='ANY'):
         """
         View all configured DNS records (A, MX, CNAME etc.) for a specified domain name.
@@ -77,7 +108,28 @@ class Client():
             http_headers.append(http_header)
 
         return http_headers
-    
+
+    def get_free_email_lookup(self, domain):
+        """
+        This tool will find out if a domain name provides free email addresses.
+        Search is performed on a custom made list of thousands of known free email hosts.
+        
+        Params:
+
+        * domain - the domain name to test for free email services
+
+        Docs: https://viewdns.info/api/docs/free-email-lookup.php
+        """
+
+        params = dict()
+        params['domain'] = domain
+
+        res = self._execute('freeemail', params=params)
+
+        provide_free_email = FreeEmail(**res['response'])
+
+        return provide_free_email
+
     def get_ip_location(self, ip):
         """
         This tool will display geographic information about a supplied IP address including city, country, latitude, longitude and more.
@@ -97,7 +149,27 @@ class Client():
         ip_location = IPLocation(**res['response'])
 
         return ip_location
-    
+
+    def mac_lookup(self, mac):
+        """
+        This tool will display the name of the company that manufactured a specific network device based on its MAC Address.
+        
+        Params:
+
+        * mac - the MAC address to lookup
+
+        Docs: https://viewdns.info/api/docs/mac-address-lookup.php
+        """
+
+        params = dict()
+        params['mac'] = mac
+
+        res = self._execute('maclookup', params=params)
+
+        mac_looup = MacLookup(**res['response'])
+
+        return mac_looup
+
     def _execute(self, url, params=None):
 
         url = urlparse.urljoin(self.base_url, url)
