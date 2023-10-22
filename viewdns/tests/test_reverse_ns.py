@@ -27,5 +27,7 @@ class TestReverseMx(BaseTest):
 
         self.assertEqual(reverse_ns.current_page, '1')
         self.assertIsInstance(reverse_ns.domains,list)
-        self.assertTrue(set(reverse_ns.domains).issubset(set(json.loads(data)['response']['domains'])))
+        result = set(t for d in reverse_ns.domains for t in d.items())
+        target = set(t for d in json.loads(data)['response']['domains'] for t in d.items())
+        self.assertTrue(result.issubset(target))
         
