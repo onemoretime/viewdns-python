@@ -11,6 +11,8 @@ from .IPLocation import IPLocation
 from .FreeEmail import FreeEmail
 from .IpHistory import IpHistory
 from .MacLookup import MacLookup
+from .Ping import Ping
+from .PortScanner import PortScanner
 
 class Client():
 
@@ -55,6 +57,33 @@ class Client():
             ip_records.append(ip_record)
 
         return ip_records
+
+    def port_scanner(self, host):
+        """
+        This web based port scanner will test whether common ports are open on a server.
+        Useful in determining if a specific service (e.g. HTTP) is up or down on a specific server. 
+
+        Ports scanned are: 21, 22, 23, 25, 80, 110, 139, 143, 445, 1433, 1521, 3306 and 3389
+
+        Params:
+
+        * host - the host to perform the port scanner on (domain or IP address)
+
+        Docs: https://viewdns.info/api/docs/port-scanner.php
+        """
+
+        params = dict()
+        params['host'] = host
+
+        res = self._execute('portscan', params=params)
+
+        ports = []
+
+        for port in res['response']['port']:
+            port = PortScanner(**port)
+            ports.append(port)
+
+        return ports
 
     def get_dns_records(self, domain, record_type='ANY'):
         """
@@ -108,6 +137,30 @@ class Client():
             http_headers.append(http_header)
 
         return http_headers
+
+    def ping(self, host):
+        """
+        Test how long a response from remote system takes to reach the ViewDNS server. Useful for detecting latency issues on network connections.
+
+        Params:
+
+        * host - the domain or IP address to perform a ping on
+
+        Docs: https://viewdns.info/api/docs/ping.php
+        """
+
+        params = dict()
+        params['host'] = host
+
+        res = self._execute('ping', params=params)
+
+        rtts = []
+
+        for rtt in res['response']['replys']:
+            rtt = Ping(**rtt)
+            rtts.append(rtt)
+
+        return rtts    
 
     def get_free_email_lookup(self, domain):
         """
