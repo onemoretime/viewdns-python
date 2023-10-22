@@ -17,6 +17,7 @@ from .ReverseDns import ReverseDns
 from .ReverseIp import ReverseIp
 from .ReverseMx import ReverseMx
 from .ReverseNs import ReverseNs
+from .Balance import Balance
 
 class Client():
 
@@ -323,13 +324,30 @@ class Client():
 
         res = self._execute('maclookup', params=params)
 
-        mac_looup = MacLookup(**res['response'])
+        mac_lookup = MacLookup(**res['response'])
 
-        return mac_looup
+        return mac_lookup
 
-    def _execute(self, url, params=None):
+    def balance(self):
+        """
+        View the current query count, limit and balance of any prepaid queries for your API account.    
 
-        url = urlparse.urljoin(self.base_url, url)
+        Docs: https://viewdns.info/api/docs/account-balance.php
+        """
+
+        params = dict()
+        params['action'] = 'balance'
+
+        res = self._execute(None, params=params)
+
+        balance = Balance(**res['response'])
+
+        return balance    
+
+    def _execute(self, url = None, params=None):
+        computed_url = self.base_url
+        if url:
+            computed_url = urlparse.urljoin(self.base_url, url)
 
         if params is None:
             params = dict()
@@ -337,7 +355,7 @@ class Client():
         params['apikey'] = self.api_key
         params['output'] = 'json'
 
-        req = requests.get(url, params=params)
+        req = requests.get(computed_url, params=params)
 
         if req.status_code == 404:
             raise Exception()

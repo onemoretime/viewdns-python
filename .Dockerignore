@@ -1,3 +1,6 @@
 .git/
+.github/
 *.pyc
 *__pycache__
+tests
+*.egg-info
