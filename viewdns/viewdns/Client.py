@@ -13,6 +13,10 @@ from .IpHistory import IpHistory
 from .MacLookup import MacLookup
 from .Ping import Ping
 from .PortScanner import PortScanner
+from .ReverseDns import ReverseDns
+from .ReverseIp import ReverseIp
+from .ReverseMx import ReverseMx
+from .ReverseNs import ReverseNs
 
 class Client():
 
@@ -84,6 +88,86 @@ class Client():
             ports.append(port)
 
         return ports
+
+    def reverse_ns(self, ns, page=None):
+        """
+        Takes a mail server (e.g. mail.google.com) and quickly shows 
+        all other domains that use the same mail server.
+        Useful for identifying domains that are used as email aliases
+
+        Params:
+
+        * ns - the nameserver to query
+
+        * page - view further pages of results (e.g. '2' to view results 10,001 to 20,000) - optional
+
+        todo: use page param
+
+        Docs: https://viewdns.info/api/docs/reverse-ns-lookup.php
+        """
+
+        params = dict()
+        params['ns'] = ns
+
+        res = self._execute('reversens', params=params)
+
+        reverse_ns = ReverseNs(**res['response'])
+
+        return reverse_ns
+
+    def reverse_mx(self, mx, page=None):
+        """
+        Takes a mail server (e.g. mail.google.com) and quickly shows 
+        all other domains that use the same mail server.
+        Useful for identifying domains that are used as email aliases
+
+        Params:
+
+        * mx - the mail server to query
+
+        * page - view further pages of results (e.g. '2' to view results 10,001 to 20,000) - optional
+
+        todo: use page param
+
+        Docs: https://viewdns.info/api/docs/reverse-mx-lookup.php
+        """
+
+        params = dict()
+        params['mx'] = mx
+
+        res = self._execute('reversemx', params=params)
+
+        reverse_mx = ReverseMx(**res['response'])
+
+        return reverse_mx
+
+    def reverse_ip(self, host, page=None):
+        """
+        View all configured DNS records (A, MX, CNAME etc.) for a specified domain name.
+
+        Params:
+
+        * host - the domain or IP address to find all hosted domains on
+
+        * page - view further pages of results (e.g. '2' to view results 10,001 to 20,000) - optional
+
+        todo: use page param
+
+        Docs: https://viewdns.info/api/docs/reverse-ip-lookup.php
+        """
+
+        params = dict()
+        params['host'] = host
+
+        res = self._execute('reverseip', params=params)
+
+        domains = []
+
+        for domain in res['response']['domains']:        
+            domain = ReverseIp(**domain)
+            domains.append(domain)
+
+        return domains
 
     def get_dns_records(self, domain, record_type='ANY'):
         """
@@ -182,6 +266,26 @@ class Client():
         provide_free_email = FreeEmail(**res['response'])
 
         return provide_free_email
+
+    def reverse_dns(self, ip):
+        """
+        Find the reverse DNS entry (PTR) for a given IP. This is generally the server or host name.
+        
+        Params:
+
+        * ip - the IP address to retrieve the reverse DNS record for
+
+        Docs: https://viewdns.info/api/docs/reverse-dns-lookup.php
+        """
+
+        params = dict()
+        params['ip'] = ip
+
+        res = self._execute('reversedns', params=params)
+
+        rdns = ReverseDns(**res['response'])
+
+        return rdns
 
     def get_ip_location(self, ip):
         """

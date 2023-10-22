@@ -20,7 +20,6 @@ class TestIpLocation(BaseTest):
         data = self.load_from_file('free_email_lookup_false.json')
         responses.add(responses.GET, url, body=data, status=200)
         provide_free_email = self.client.get_free_email_lookup('test.com')
-        print(provide_free_email)
         self.assertFalse(provide_free_email.provide_free_email)
 
         data = self.load_from_file('free_email_lookup_true.json')
