@@ -15,17 +15,17 @@ class TestReverseMx(BaseTest):
     @responses.activate
     def test_reverse_ip(self):
 
-        data = self.load_from_file('reverse_mx.json')
+        data = self.load_from_file('reverse_ns.json')
 
-        url = self.base_url + 'reversemx'
+        url = self.base_url + 'reversens'
         responses.add(responses.GET, url, body=data, status=200)
 
-        reverse_mx = self.client.reverse_mx('mail.google.com')
+        reverse_ns = self.client.reverse_ns('ns1.websitewelcome.com')
 
-        self.assertEqual(reverse_mx.domain_count, '818')
-        self.assertEqual(reverse_mx.total_pages, '1')
+        self.assertEqual(reverse_ns.domain_count, '10897')
+        self.assertEqual(reverse_ns.total_pages, '2')
 
-        self.assertEqual(reverse_mx.current_page, '1')
-        self.assertIsInstance(reverse_mx.domains,list)
-        self.assertTrue(set(reverse_mx.domains).issubset(set(json.loads(data)['response']['domains'])))
+        self.assertEqual(reverse_ns.current_page, '1')
+        self.assertIsInstance(reverse_ns.domains,list)
+        self.assertTrue(set(reverse_ns.domains).issubset(set(json.loads(data)['response']['domains'])))
         
