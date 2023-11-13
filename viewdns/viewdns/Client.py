@@ -1,7 +1,7 @@
 import requests
 
 try:
-    import urlparse
+    import urlparse  # type: ignore [import-not-found]
 except ImportError:
     from urllib import parse as urlparse
 
