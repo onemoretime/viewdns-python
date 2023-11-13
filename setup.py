@@ -22,5 +22,5 @@ setuptools.setup(
     ],
     package_dir={"": "viewdns"},
     packages=setuptools.find_packages(where="viewdns"),
-    python_requires=">=3.6",
+    python_requires=">=3.8",
 )
