@@ -1,9 +1,13 @@
-# viewdns-python
+# viewdns-python - Forked from 
+
+:warning:  This is a fork from [mscribellito viewdns-python project](https://github.com/mscribellito/viewdns-python).
+
+:warning: this fork is not pusblished on pypi.
 
 `viewdns-python` is a Python library for interacting with the [ViewDNS.info](https://viewdns.info/) API.
 
-[![Python package](https://github.com/mscribellito/viewdns-python/actions/workflows/python-package.yml/badge.svg)](https://github.com/mscribellito/viewdns-python/actions/workflows/python-package.yml)
-[![Upload Python Package](https://github.com/mscribellito/viewdns-python/actions/workflows/python-publish.yml/badge.svg)](https://github.com/mscribellito/viewdns-python/actions/workflows/python-publish.yml)
+[![Python package](https://github.com/onemoretime/viewdns-python/actions/workflows/python-package.yml/badge.svg)](https://github.com/onemoretime/viewdns-python/actions/workflows/python-package.yml)
+[![Upload Python Package](https://github.com/onemoretime/viewdns-python/actions/workflows/python-publish.yml/badge.svg)](https://github.com/onemoretime/viewdns-python/actions/workflows/python-publish.yml)
 
 ## Installation
 
