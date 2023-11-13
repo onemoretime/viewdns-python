@@ -17,7 +17,7 @@ class TestBalance(BaseTest):
 
         data = self.load_from_file('balance.json')
 
-        url = self.base_url
+        url = self.base_url + 'account'
         responses.add(responses.GET, url, body=data, status=200)
 
         balance = self.client.balance()

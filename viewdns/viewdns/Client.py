@@ -1,9 +1,11 @@
 import requests
 
 try:
-    import urlparse  # type: ignore [import-not-found]
+    import urlparse  # type: ignore [import-not-found, import]
 except ImportError:
     from urllib import parse as urlparse
+
+from json.decoder import JSONDecodeError
 
 from .DNSRecord import DNSRecord
 from .HTTPHeader import HTTPHeader
@@ -338,7 +340,7 @@ class Client():
         params = dict()
         params['action'] = 'balance'
 
-        res = self._execute(None, params=params)
+        res = self._execute('account', params=params)
 
         balance = Balance(**res['response'])
 
@@ -362,7 +364,10 @@ class Client():
 
         try:
             data = req.json()
-        except ValueError as e:
-            raise Exception(e)
-
-        return data
+        except JSONDecodeError as exc:
+            print(req.content)
+            raise Exception("Error while decoding json") from exc
+        except ValueError as exc:
+            raise Exception(exc)
+        else:
+            return data
