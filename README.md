@@ -23,6 +23,8 @@ pip setup.py install
 import viewdns
 
 client = viewdns.Client('your-api-key')
+# display your api balance
+print(client.balance())
 ```
 
 ## Features
